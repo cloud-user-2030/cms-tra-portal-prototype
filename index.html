@@ -1,23 +1,1008 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMS TRA Interactive Portal</title>
+  <style>
+    :root {
+      --bg: #eef3f9;
+      --panel: #ffffff;
+      --panel-soft: #f8fafc;
+      --line: #d9e2ec;
+      --text: #0f172a;
+      --muted: #52637a;
+      --blue: #2450e6;
+      --blue-2: #3a6af0;
+      --blue-3: #dfe9ff;
+      --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+      --space-1: 8px;
+      --space-2: 12px;
+      --space-3: 16px;
+      --space-4: 20px;
+      --space-5: 24px;
+      --space-6: 32px;
+      --font-xs: 12px;
+      --font-sm: 14px;
+      --font-md: 16px;
+      --font-lg: 20px;
+      --font-xl: 28px;
+    }
 
-    <!-- Mobile responsiveness -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    * {
+      box-sizing: border-box;
+      min-width: 0;
+    }
 
-    <!-- SEO / Title -->
-    <title>CMS TRA Interactive Portal</title>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, sans-serif;
+      line-height: 1.45;
+    }
 
-    <!-- Optional: Favicon (safe even if file missing) -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  </head>
+    img, svg, canvas {
+      max-width: 100%;
+      display: block;
+    }
 
-  <body>
-    <!-- React mounts here -->
-    <div id="root"></div>
+    button, input, select {
+      font: inherit;
+    }
 
-    <!-- Vite entry point (DO NOT CHANGE PATH) -->
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+    .page {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .header {
+      background: linear-gradient(180deg, var(--blue), #2048d4);
+      color: #fff;
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 22px 24px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .eyebrow {
+      font-size: var(--font-sm);
+      opacity: 0.95;
+      margin-bottom: 4px;
+    }
+
+    .title {
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 1.1;
+      font-weight: 800;
+      margin: 0 0 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      font-size: var(--font-md);
+      color: rgba(255,255,255,0.9);
+      margin: 0;
+    }
+
+    .header-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: var(--font-xs);
+      font-weight: 600;
+      background: rgba(255,255,255,0.14);
+      color: #fff;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 16px 24px 18px;
+    }
+
+    .tab {
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-size: var(--font-sm);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      background: #fff;
+      color: var(--blue);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr) 280px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .rail,
+    .center {
+      display: grid;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .card-title {
+      margin: 0 0 14px;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: var(--font-sm);
+    }
+
+    .stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .mini-note {
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: var(--panel-soft);
+      border-radius: var(--radius-sm);
+      font-size: var(--font-sm);
+      color: var(--muted);
+    }
+
+    .action-grid,
+    .domain-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .action-btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 16px;
+      min-height: 78px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: var(--font-sm);
+      font-weight: 600;
+      color: #22324a;
+      overflow-wrap: anywhere;
+    }
+
+    .status-list,
+    .mode-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .status-row,
+    .mode-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: var(--font-sm);
+    }
+
+    .mode-pill {
+      flex: 0 0 auto;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: #eef2f7;
+      color: #44556d;
+      white-space: nowrap;
+    }
+
+    .link-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .source-link {
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      text-decoration: none;
+      background: #fff;
+      color: inherit;
+      overflow-wrap: anywhere;
+    }
+
+    .source-link strong {
+      display: block;
+      font-size: var(--font-sm);
+      margin-bottom: 4px;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .search {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-size: var(--font-md);
+      color: var(--text);
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      border: 0;
+      border-radius: 16px;
+      padding: 14px 18px;
+      font-size: var(--font-sm);
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .primary-btn {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .secondary-btn {
+      background: #fff;
+      color: #32465f;
+      border: 1px solid var(--line);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .chip {
+      background: #eaf0ff;
+      color: var(--blue);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .kpi {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      min-height: 106px;
+      display: grid;
+      gap: 6px;
+      align-content: start;
+    }
+
+    .kpi-label {
+      font-size: var(--font-sm);
+      color: var(--muted);
+    }
+
+    .kpi-value {
+      font-size: clamp(28px, 3vw, 40px);
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .hero-panel {
+      min-height: 480px;
+      display: grid;
+      gap: 20px;
+      align-content: start;
+    }
+
+    .hero-copy {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .section-label {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #93a9ff;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .hero-title {
+      font-size: clamp(24px, 2vw, 34px);
+      line-height: 1.15;
+      font-weight: 800;
+      margin: 0 0 12px;
+      color: #0f172a;
+    }
+
+    .hero-text {
+      margin: 0;
+      color: var(--muted);
+      font-size: var(--font-md);
+      max-width: 62ch;
+    }
+
+    .heat-shell {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 20px;
+      display: grid;
+      gap: 16px;
+      min-height: 520px;
+    }
+
+    .heat-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .heat-desc {
+      color: var(--muted);
+      font-size: var(--font-sm);
+      max-width: 62ch;
+    }
+
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .insight-box {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: #fff;
+    }
+
+    .insight-box h4 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      line-height: 1.2;
+    }
+
+    .insight-rows {
+      display: grid;
+      gap: 10px;
+    }
+
+    .insight-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      font-size: 13px;
+      color: #31425c;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      flex: 0 0 auto;
+      display: inline-block;
+      margin-right: 8px;
+    }
+
+    .donut {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      margin-left: auto;
+      position: relative;
+      background:
+        conic-gradient(#1db9a6 0 62%, #f5bf2a 62% 90%, #ef6b6b 90% 100%);
+    }
+
+    .donut.risk {
+      background:
+        conic-gradient(#4f8df7 0 32%, #9f7aea 32% 59%, #f5bf2a 59% 82%, #ef6b6b 82% 100%);
+    }
+
+    .donut::after {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      background: #fff;
+      border-radius: 50%;
+    }
+
+    .donut span {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      z-index: 1;
+      font-size: 20px;
+      font-weight: 800;
+      color: #24324c;
+    }
+
+    .heat-controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .select {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px 14px;
+      min-width: 180px;
+      background: #fff;
+      color: #22324a;
+    }
+
+    .heat-table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 8px;
+    }
+
+    .heat-table {
+      min-width: 620px;
+      display: grid;
+      grid-template-columns: 120px repeat(4, minmax(92px, 1fr));
+      gap: 10px;
+      align-items: center;
+    }
+
+    .heat-head {
+      font-size: 13px;
+      font-weight: 700;
+      color: #6a7d96;
+      text-align: center;
+      padding-bottom: 2px;
+    }
+
+    .heat-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #22324a;
+      white-space: nowrap;
+      padding-right: 6px;
+    }
+
+    .heat-cell {
+      height: 40px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .b1 { background: #1d4ed8; }
+    .b2 { background: #3b82f6; }
+    .b3 { background: #93c5fd; color: #0f172a; }
+    .b4 { background: #dce7f7; color: #31425c; }
+
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 20px;
+    }
+
+    .chart-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 18px;
+      min-height: 320px;
+      overflow: hidden;
+    }
+
+    .chart-title {
+      margin: 0 0 16px;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .chart-area {
+      height: 240px;
+      border-radius: 18px;
+      background:
+        linear-gradient(to right, rgba(148,163,184,0.18) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(148,163,184,0.18) 1px, transparent 1px),
+        #fff;
+      background-size: 72px 100%, 100% 60px, auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bars {
+      position: absolute;
+      inset: 16px 16px 28px 56px;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      align-items: end;
+      gap: 28px;
+    }
+
+    .bar {
+      background: #5d99eb;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .line-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .x-labels {
+      position: absolute;
+      left: 56px;
+      right: 16px;
+      bottom: 8px;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 28px;
+      text-align: center;
+      font-size: 12px;
+      color: #52637a;
+    }
+
+    .panel-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .panel-item {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      padding: 16px;
+      font-size: var(--font-sm);
+      color: #31425c;
+      overflow-wrap: anywhere;
+    }
+
+    .right-sticky {
+      position: sticky;
+      top: 16px;
+    }
+
+    @media (max-width: 1200px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .right-sticky {
+        position: static;
+      }
+
+      .hero-grid,
+      .bottom-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 12px;
+      }
+
+      .header-top {
+        padding: 18px 18px 12px;
+      }
+
+      .tabs {
+        padding: 14px 18px 18px;
+      }
+
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .kpis {
+        grid-template-columns: 1fr;
+      }
+
+      .action-grid,
+      .domain-grid,
+      .insight-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card,
+      .chart-card,
+      .hero-copy,
+      .heat-shell {
+        padding: 16px;
+      }
+
+      .title {
+        font-size: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="header-top">
+        <div>
+          <div class="eyebrow">CMS TRA Interactive Portal</div>
+          <h1 class="title">Executive analytics preview</h1>
+          <p class="subtitle">AI-enabled architecture, traceability, and compliance workspace</p>
+        </div>
+        <div class="header-badges">
+          <span class="badge">Release 2025 R1</span>
+          <span class="badge">Zero Trust Ready</span>
+          <span class="badge">AI Copilot Enabled</span>
+        </div>
+      </div>
+      <div class="tabs">
+        <button class="tab">Business Rules</button>
+        <button class="tab">Recommended Practices</button>
+        <button class="tab">AI Insights</button>
+        <button class="tab active">Heat Map</button>
+        <button class="tab">Analytics</button>
+        <button class="tab">Traceability</button>
+        <button class="tab">Reference Library</button>
+        <button class="tab">Acronym Guide</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="rail">
+        <section class="card stack">
+          <h2 class="card-title">Interactive metadata</h2>
+          <div class="stack">
+            <strong>Heat Map metadata</strong>
+            <div class="muted">Interactive preview metadata is available for this item. In the live version, this can open a drawer, modal, or linked details panel.</div>
+            <div class="mini-note">Click a KPI card, rule tile, top menu tab, or analytics section to update this panel.</div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2 class="card-title">Quick actions</h2>
+          <div class="action-grid">
+            <div class="action-btn">Business Rules</div>
+            <div class="action-btn">AI Copilot</div>
+            <div class="action-btn">Heat Map</div>
+            <div class="action-btn">Analytics</div>
+            <div class="action-btn">Grid View</div>
+            <div class="action-btn">Trace Links</div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2 class="card-title">Browse by domain</h2>
+          <div class="domain-grid">
+            <div class="action-btn">Application</div>
+            <div class="action-btn">Data</div>
+            <div class="action-btn">Security</div>
+            <div class="action-btn">Infrastructure</div>
+            <div class="action-btn">Cloud</div>
+            <div class="action-btn">Integration</div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2 class="card-title">Live status</h2>
+          <div class="status-list">
+            <div class="status-row"><span class="muted">Rules mapped</span><strong>1,248</strong></div>
+            <div class="status-row"><span class="muted">High risk gaps</span><strong>14</strong></div>
+            <div class="status-row"><span class="muted">AI summaries</span><strong>328</strong></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2 class="card-title">CMS TRA source links</h2>
+          <div class="link-list">
+            <a class="source-link" href="#"><strong>Foundation</strong><span class="muted">Open CMS TRA source page</span></a>
+            <a class="source-link" href="#"><strong>Infrastructure / Virtualization</strong><span class="muted">Open CMS TRA source page</span></a>
+            <a class="source-link" href="#"><strong>Application Development</strong><span class="muted">Open CMS TRA source page</span></a>
+          </div>
+        </section>
+      </aside>
+
+      <section class="center">
+        <section class="card">
+          <div class="toolbar">
+            <input class="search" value="How can I securely transfer sensitive data?" />
+            <button class="primary-btn">Ask TRA AI</button>
+            <button class="secondary-btn">Filters</button>
+          </div>
+          <div class="chips">
+            <span class="chip">Show all Zero Trust rules in identity assurance</span>
+            <span class="chip">Compare AI rule to NIST and CMS ARS mappings</span>
+            <span class="chip">Find controls with high risk and low maturity</span>
+            <span class="chip">Generate TRB-ready compliance summary</span>
+          </div>
+        </section>
+
+        <section class="kpis">
+          <div class="kpi">
+            <div class="kpi-label">Compliance Score</div>
+            <div class="kpi-value">92%</div>
+            <div class="muted">Up 6% this quarter</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">Mapped Controls</div>
+            <div class="kpi-value">2,386</div>
+            <div class="muted">Linked to evidence</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">Open Risks</div>
+            <div class="kpi-value">14</div>
+            <div class="muted">3 need immediate action</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">AI Summaries</div>
+            <div class="kpi-value">328</div>
+            <div class="muted">Generated for reviews</div>
+          </div>
+        </section>
+
+        <section class="hero-grid">
+          <div class="hero-panel">
+            <div class="hero-copy">
+              <div class="section-label">Heat Map</div>
+              <h2 class="hero-title">See maturity and risk at a glance</h2>
+              <p class="hero-text">Switch from narrative guidance to visual maturity patterns across domains, quarters, and control coverage.</p>
+            </div>
+
+            <div class="heat-shell">
+              <div class="heat-top">
+                <div>
+                  <h3 class="card-title" style="margin:0 0 6px;">Dynamic visual explorer</h3>
+                  <div class="heat-desc">Improved layout with readable labels, stable spacing, no clipped text, and responsive heat map behavior.</div>
+                </div>
+                <div class="heat-controls">
+                  <select class="select">
+                    <option>Heat map</option>
+                    <option>Bubbles</option>
+                    <option>Cluster</option>
+                    <option>Gauge</option>
+                  </select>
+                  <span class="badge" style="background:#eef3ff;color:#2450e6;">Hover</span>
+                </div>
+              </div>
+
+              <div class="heat-table-wrap">
+                <div class="heat-table">
+                  <div></div>
+                  <div class="heat-head">Q1</div>
+                  <div class="heat-head">Q2</div>
+                  <div class="heat-head">Q3</div>
+                  <div class="heat-head">Q4</div>
+
+                  <div class="heat-label">Identity</div>
+                  <div class="heat-cell b1">92</div>
+                  <div class="heat-cell b2">84</div>
+                  <div class="heat-cell b2">80</div>
+                  <div class="heat-cell b3">74</div>
+
+                  <div class="heat-label">Devices</div>
+                  <div class="heat-cell b3">78</div>
+                  <div class="heat-cell b4">69</div>
+                  <div class="heat-cell b4">64</div>
+                  <div class="heat-cell b4">58</div>
+
+                  <div class="heat-label">Networks</div>
+                  <div class="heat-cell b2">88</div>
+                  <div class="heat-cell b2">80</div>
+                  <div class="heat-cell b3">76</div>
+                  <div class="heat-cell b3">71</div>
+
+                  <div class="heat-label">Apps</div>
+                  <div class="heat-cell b1">90</div>
+                  <div class="heat-cell b2">85</div>
+                  <div class="heat-cell b3">79</div>
+                  <div class="heat-cell b3">72</div>
+
+                  <div class="heat-label">Data</div>
+                  <div class="heat-cell b1">95</div>
+                  <div class="heat-cell b1">92</div>
+                  <div class="heat-cell b2">86</div>
+                  <div class="heat-cell b2">80</div>
+                </div>
+              </div>
+
+              <div class="insight-grid">
+                <div class="insight-box">
+                  <h4>Compliance by Status</h4>
+                  <div class="insight-rows">
+                    <div class="insight-row"><span><span class="dot" style="background:#1db9a6;"></span>Compliant</span><strong>62%</strong></div>
+                    <div class="insight-row"><span><span class="dot" style="background:#f5bf2a;"></span>Monitoring</span><strong>28%</strong></div>
+                    <div class="insight-row"><span><span class="dot" style="background:#ef6b6b;"></span>At Risk</span><strong>10%</strong></div>
+                  </div>
+                </div>
+                <div class="insight-box">
+                  <h4>Risk Factor Breakdown</h4>
+                  <div class="insight-rows">
+                    <div class="insight-row"><span><span class="dot" style="background:#4f8df7;"></span>Identity</span><strong>32%</strong></div>
+                    <div class="insight-row"><span><span class="dot" style="background:#9f7aea;"></span>Access</span><strong>27%</strong></div>
+                    <div class="insight-row"><span><span class="dot" style="background:#f5bf2a;"></span>Data</span><strong>23%</strong></div>
+                    <div class="insight-row"><span><span class="dot" style="background:#ef6b6b;"></span>Devices</span><strong>18%</strong></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="right-sticky">
+            <section class="card stack">
+              <h2 class="card-title">AI Copilot</h2>
+              <div class="mini-note">
+                <strong>Suggested prompt</strong><br />
+                How can I securely transfer sensitive data?
+              </div>
+              <div class="mini-note">
+                Use BR-DSS style guidance: protect data in transit with approved encryption and secure transfer protocols such as TLS-protected APIs or SFTP.
+              </div>
+              <button class="primary-btn" style="width:100%;">Run AI analysis</button>
+            </section>
+
+            <section class="card">
+              <h2 class="card-title">CMS TRA source links</h2>
+              <div class="link-list">
+                <a class="source-link" href="#"><strong>Data Management</strong><span class="muted">Open CMS TRA source page</span></a>
+                <a class="source-link" href="#"><strong>Data Storage Services</strong><span class="muted">Open CMS TRA source page</span></a>
+                <a class="source-link" href="#"><strong>Business Intelligence</strong><span class="muted">Open CMS TRA source page</span></a>
+              </div>
+            </section>
+          </aside>
+        </section>
+
+        <section class="bottom-grid">
+          <div class="chart-card">
+            <h3 class="chart-title">Mappings by month</h3>
+            <div class="chart-area">
+              <div class="bars">
+                <div class="bar" style="height:88px;"></div>
+                <div class="bar" style="height:108px;"></div>
+                <div class="bar" style="height:136px;"></div>
+                <div class="bar" style="height:176px;"></div>
+                <div class="bar" style="height:220px;"></div>
+                <div class="bar" style="height:244px;"></div>
+              </div>
+              <svg class="line-svg" viewBox="0 0 800 320" preserveAspectRatio="none" aria-hidden="true">
+                <polyline
+                  fill="none"
+                  stroke="#ef4444"
+                  stroke-width="3"
+                  points="110,70 225,115 340,150 455,175 570,198 685,220"
+                />
+                <circle cx="110" cy="70" r="5" fill="#fff" stroke="#ef4444" stroke-width="3"/>
+                <circle cx="225" cy="115" r="5" fill="#fff" stroke="#ef4444" stroke-width="3"/>
+                <circle cx="340" cy="150" r="5" fill="#fff" stroke="#ef4444" stroke-width="3"/>
+                <circle cx="455" cy="175" r="5" fill="#fff" stroke="#ef4444" stroke-width="3"/>
+                <circle cx="570" cy="198" r="5" fill="#fff" stroke="#ef4444" stroke-width="3"/>
+                <circle cx="685" cy="220" r="5" fill="#fff" stroke="#ef4444" stroke-width="3"/>
+              </svg>
+              <div class="x-labels">
+                <span>Jan</span>
+                <span>Feb</span>
+                <span>Mar</span>
+                <span>Apr</span>
+                <span>May</span>
+                <span>Jun</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="rail">
+            <section class="card">
+              <h2 class="card-title">Latest updates</h2>
+              <div class="panel-list">
+                <div class="panel-item">New ARS 5.0 guidelines</div>
+                <div class="panel-item">TRB compliance review tips</div>
+                <div class="panel-item">Zero Trust framework overview</div>
+                <div class="panel-item">AI governance starter checklist</div>
+              </div>
+            </section>
+
+            <section class="card">
+              <h2 class="card-title">Analyst mode</h2>
+              <div class="mode-list">
+                <div class="mode-row"><span>Executive summary export</span><span class="mode-pill">Ready</span></div>
+                <div class="mode-row"><span>Risk heat map view</span><span class="mode-pill">Enabled</span></div>
+                <div class="mode-row"><span>TRB summary workflow</span><span class="mode-pill">Mock</span></div>
+                <div class="mode-row"><span>Sparx EA sync preview</span><span class="mode-pill">Concept</span></div>
+              </div>
+            </section>
+          </div>
+        </section>
+      </section>
+
+      <aside class="rail">
+        <section class="card stack">
+          <h2 class="card-title">Suggested content</h2>
+          <div class="panel-list">
+            <div class="panel-item">Data encryption best practices</div>
+            <div class="panel-item">Cloud compliance checklist</div>
+            <div class="panel-item">Recent Zero Trust updates</div>
+            <div class="panel-item">AI-ready TRB review template</div>
+          </div>
+        </section>
+      </aside>
+    </main>
+  </div>
+</body>
 </html>
