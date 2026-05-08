@@ -393,7 +393,7 @@ const TopNav = memo(function TopNav({ activeTopTab, onChange }) {
   return (
     <div className="px-4 md:px-6 py-4">
       <div className="overflow-x-auto overflow-y-hidden pb-1 scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <div className="flex w-max min-w-full gap-2 rounded-[22px] border border-white/12 bg-white/10 p-2 backdrop-blur-sm md:flex-wrap md:w-full md:min-w-0">
+        <div className="flex w-fit max-w-full mx-auto gap-2 rounded-[22px] border border-white/30 bg-white/14 p-2 backdrop-blur-sm shadow-inner md:flex-wrap">
           {TOP_TABS.map((tab) => {
             const isActive = activeTopTab === tab;
             return (
@@ -404,8 +404,8 @@ const TopNav = memo(function TopNav({ activeTopTab, onChange }) {
                 onClick={() => onChange(tab)}
                 className={`min-h-[42px] shrink-0 rounded-[16px] px-3 md:px-4 py-2 transition-colors duration-100 border text-xs md:text-sm font-medium leading-none whitespace-nowrap cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 ${
                   isActive
-                    ? 'bg-white text-blue-700 border-white shadow-lg shadow-blue-950/15'
-                    : 'bg-transparent hover:bg-white/14 text-white border-transparent hover:border-white/20 active:bg-white/16'
+                    ? 'bg-white text-blue-700 border-white shadow-lg shadow-blue-950/20'
+                    : 'bg-transparent hover:bg-white/16 text-white border-transparent hover:border-white/30 active:bg-white/20'
                 }`}
               >
                 {tab}
@@ -639,7 +639,7 @@ const SparkMini = memo(function SparkMini({ label, value, series }) {
     .join(' ');
 
   return (
-    <div className="rounded-xl bg-white/10 border border-white/10 px-2.5 py-2">
+    <div className="rounded-xl bg-white/10 border border-white/25 px-2.5 py-2">
       <div className="flex items-center justify-between gap-2 text-[11px] text-blue-100">
         <span className="truncate">{label}</span>
         <span className="shrink-0">{value}%</span>
@@ -741,7 +741,7 @@ const SignalTimelineCard = memo(function SignalTimelineCard() {
   };
 
   return (
-    <div className="rounded-2xl border border-white/15 bg-gradient-to-br from-white/12 to-white/6 p-4 overflow-hidden min-w-0">
+    <div className="rounded-2xl border border-white/30 bg-gradient-to-br from-white/12 to-white/6 p-4 overflow-hidden min-w-0">
       <div className="flex items-center justify-between gap-3">
         <div>
           <div className="text-sm font-semibold leading-5 text-white">Signal timeline</div>
@@ -939,7 +939,7 @@ function CmsTraAnalyticsPreview() {
     <div className="min-h-screen bg-slate-100 p-4 md:p-6">
       <div className="max-w-7xl mx-auto space-y-5 md:space-y-6">
         <div className="rounded-[28px] bg-blue-700 text-white shadow-xl overflow-hidden">
-          <div className="px-6 pt-5 pb-4 border-b border-white/10">
+          <div className="px-6 pt-5 pb-4 border-b border-white/25">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 text-sm text-blue-100"><Layers3 className="w-4 h-4" /> CMS TRA Interactive Portal</div>
@@ -1090,7 +1090,7 @@ function CmsTraAnalyticsPreview() {
                     </div>
 
                     <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-                      <button type="button" onClick={() => openDetail('AI Insights')} className="rounded-2xl border border-white/15 bg-gradient-to-br from-white/12 to-white/6 p-4 text-left overflow-hidden min-w-0 transition hover:bg-white/15 active:scale-[0.99]">
+                      <button type="button" onClick={() => openDetail('AI Insights')} className="rounded-2xl border border-white/30 bg-gradient-to-br from-white/12 to-white/6 p-4 text-left overflow-hidden min-w-0 transition hover:bg-white/15 active:scale-[0.99]">
                         <div className="flex items-start justify-between gap-2">
                           <div className="min-w-0">
                             <div className="text-sm font-semibold leading-5">Decision signals</div>
@@ -1104,7 +1104,7 @@ function CmsTraAnalyticsPreview() {
                             ['Review', '7'],
                             ['Risk', '3'],
                           ].map(([label, value]) => (
-                            <div key={label} className="rounded-xl bg-white/12 border border-white/15 px-2 py-2.5 flex flex-col items-center justify-center min-w-0 shadow-sm">
+                            <div key={label} className="rounded-xl bg-white/14 border border-white/30 px-2 py-2.5 flex flex-col items-center justify-center min-w-0 shadow-sm">
                               <div className="text-lg font-bold leading-none">{value}</div>
                               <div className="text-[11px] text-blue-100 mt-1 leading-tight text-center whitespace-nowrap">{label}</div>
                             </div>
@@ -1112,7 +1112,7 @@ function CmsTraAnalyticsPreview() {
                         </div>
                       </button>
 
-                      <button type="button" onClick={() => openDetail('Analytics')} className="rounded-2xl border border-white/15 bg-gradient-to-br from-white/12 to-white/6 p-4 text-left overflow-hidden min-w-0 transition hover:bg-white/15 active:scale-[0.99]">
+                      <button type="button" onClick={() => openDetail('Analytics')} className="rounded-2xl border border-white/30 bg-gradient-to-br from-white/12 to-white/6 p-4 text-left overflow-hidden min-w-0 transition hover:bg-white/15 active:scale-[0.99]">
                         <div className="flex items-start justify-between gap-2">
                           <div className="min-w-0">
                             <div className="text-sm font-semibold leading-5">Floating analytics</div>
@@ -1136,19 +1136,19 @@ function CmsTraAnalyticsPreview() {
 
                   <div className="space-y-4 min-w-0">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <button type="button" onClick={() => openDetail('AI Insights')} className="rounded-2xl bg-white/12 hover:bg-white/18 border border-white/15 p-4 text-left transition overflow-hidden min-w-0">
+                      <button type="button" onClick={() => openDetail('AI Insights')} className="rounded-2xl bg-white/14 hover:bg-white/20 border border-white/30 p-4 text-left transition overflow-hidden min-w-0">
                         <div className="text-blue-200 text-xs leading-4">AI Confidence</div>
                         <div className="text-2xl font-bold mt-1 leading-none">94%</div>
                         <div className="text-xs text-blue-100 mt-1 leading-4">Summary quality</div>
                       </button>
-                      <button type="button" onClick={() => openDetail('Traceability')} className="rounded-2xl bg-white/12 hover:bg-white/18 border border-white/15 p-4 text-left transition overflow-hidden min-w-0">
+                      <button type="button" onClick={() => openDetail('Traceability')} className="rounded-2xl bg-white/14 hover:bg-white/20 border border-white/30 p-4 text-left transition overflow-hidden min-w-0">
                         <div className="text-blue-200 text-xs leading-4">Trace Links</div>
                         <div className="text-2xl font-bold mt-1 leading-none">2,386</div>
                         <div className="text-xs text-blue-100 mt-1 leading-4">Mapped records</div>
                       </button>
                     </div>
 
-                    <div className="rounded-2xl bg-white/12 border border-white/15 p-4 overflow-hidden min-w-0">
+                    <div className="rounded-2xl bg-white/14 border border-white/30 p-4 overflow-hidden min-w-0">
                       <div className="flex items-center justify-between gap-3">
                         <div className="min-w-0">
                           <div className="text-sm font-semibold leading-5">Active workflow</div>
@@ -1162,7 +1162,7 @@ function CmsTraAnalyticsPreview() {
                           ['NIST comparison', 'Ready'],
                           ['Risk scan', 'Medium'],
                         ].map(([label, status]) => (
-                          <button key={label} type="button" onClick={() => openDetail('AI Insights')} className="w-full rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 px-3 py-2.5 flex items-center justify-between gap-3 text-sm transition min-w-0 overflow-hidden">
+                          <button key={label} type="button" onClick={() => openDetail('AI Insights')} className="w-full rounded-xl bg-white/10 hover:bg-white/15 border border-white/25 px-3 py-2.5 flex items-center justify-between gap-3 text-sm transition min-w-0 overflow-hidden">
                             <span className="min-w-0 truncate text-left">{label}</span>
                             <span className="text-blue-100 shrink-0">{status}</span>
                           </button>
@@ -1170,7 +1170,7 @@ function CmsTraAnalyticsPreview() {
                       </div>
                     </div>
 
-                    <div className="rounded-2xl bg-gradient-to-br from-white/14 to-white/8 border border-white/15 p-4 overflow-hidden min-w-0">
+                    <div className="rounded-2xl bg-gradient-to-br from-white/14 to-white/8 border border-white/30 p-4 overflow-hidden min-w-0">
                       <div className="flex items-center justify-between gap-3">
                         <div>
                           <div className="text-sm font-semibold leading-5">Quick insights</div>
